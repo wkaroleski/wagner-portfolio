@@ -8,7 +8,6 @@ export default function Projects() {
       technologies: ['Rust', 'Iced (GUI)', 'Tokio', 'Rodio', 'Reqwest'],
       links: {
         github: 'https://github.com/wkaroleski/cosmic-ytm',
-        //demo: '#',
       },
       status: 'Em Produção',
     },
