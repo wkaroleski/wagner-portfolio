@@ -3,44 +3,14 @@ import { ExternalLink, Github } from 'lucide-react';
 export default function Projects() {
   const projects = [
     {
-      title: 'Framework de Automação Cypress',
-      description: 'Framework customizado para automação de testes com Cypress, incluindo padrões de design, relatórios avançados e integração CI/CD.',
-      technologies: ['Cypress', 'JavaScript', 'GitHub Actions', 'Docker'],
+      title: 'Cosmic YTM',
+      description: 'Client nativo do YouTube Music para desktop Linux. Desenvolvido com foco em performance e baixo consumo de recursos, suportando streaming assíncrono de áudio e interface gráfica fluida.',
+      technologies: ['Rust', 'Iced (GUI)', 'Tokio', 'Rodio', 'Reqwest'],
       links: {
-        github: '#',
+        github: 'https://github.com/wkaroleski/cosmic-ytm',
         demo: '#',
       },
-      status: 'Em desenvolvimento',
-    },
-    {
-      title: 'API Testing Suite',
-      description: 'Suite completa de testes para APIs REST e GraphQL com validação de schemas, performance testing e documentação automática.',
-      technologies: ['Postman', 'Newman', 'Node.js', 'Jest'],
-      links: {
-        github: '#',
-        demo: '#',
-      },
-      status: 'Concluído',
-    },
-    {
-      title: 'Dashboard de Qualidade',
-      description: 'Dashboard interativo para monitoramento de métricas de qualidade, cobertura de testes e trends de bugs em tempo real.',
-      technologies: ['React', 'TypeScript', 'Chart.js', 'PostgreSQL'],
-      links: {
-        github: '#',
-        demo: '#',
-      },
-      status: 'Concluído',
-    },
-    {
-      title: 'Automação de Infraestrutura',
-      description: 'Scripts e playbooks Ansible para provisionamento e gerenciamento de ambientes de teste com Docker e Kubernetes.',
-      technologies: ['Ansible', 'Docker', 'Kubernetes', 'Bash'],
-      links: {
-        github: '#',
-        demo: '#',
-      },
-      status: 'Em desenvolvimento',
+      status: 'Em Produção',
     },
   ];
 
@@ -62,7 +32,7 @@ export default function Projects() {
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl items-start">
           {/* Image Column */}
           <div className="md:col-span-1 rounded-xl overflow-hidden border border-border/50 shadow-2xl h-fit sticky top-24">
-            <img 
+            <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028681954/jbgjfHWhxhUsAcZnqy37sH/code-quality-metrics-NPRf2NY2t4xM5uJAELsjqn.webp"
               alt="Métricas de Qualidade"
               className="w-full h-auto object-cover"
@@ -71,61 +41,61 @@ export default function Projects() {
 
           {/* Projects Grid */}
           <div className="md:col-span-2 grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="group relative rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden h-full flex flex-col"
-            >
-              {/* Gradient Background on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                className="group relative rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden h-full flex flex-col"
+              >
+                {/* Gradient Background on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
 
-              {/* Content */}
-              <div className="p-6 flex flex-col h-full">
-                {/* Header */}
-                <div className="mb-4 flex-1">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="text-xl font-bold text-foreground flex-1">{project.title}</h3>
-                    <span className="px-2 py-1 rounded-full bg-accent/20 text-accent text-xs font-medium whitespace-nowrap">
-                      {project.status}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed mb-4">{project.description}</p>
-                </div>
-
-                {/* Technologies */}
-                <div className="mb-6">
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, i) => (
-                      <span
-                        key={i}
-                        className="px-2.5 py-1 rounded-md bg-background/50 text-foreground text-xs font-medium border border-border/50"
-                      >
-                        {tech}
+                {/* Content */}
+                <div className="p-6 flex flex-col h-full">
+                  {/* Header */}
+                  <div className="mb-4 flex-1">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="text-xl font-bold text-foreground flex-1">{project.title}</h3>
+                      <span className="px-2 py-1 rounded-full bg-accent/20 text-accent text-xs font-medium whitespace-nowrap">
+                        {project.status}
                       </span>
-                    ))}
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-4">{project.description}</p>
                   </div>
-                </div>
 
-                {/* Links */}
-                <div className="flex gap-3 pt-4 border-t border-border">
-                  <a
-                    href={project.links.github}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background/50 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium flex-1 justify-center"
-                  >
-                    <Github size={16} />
-                    GitHub
-                  </a>
-                  <a
-                    href={project.links.demo}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/20 text-accent hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium flex-1 justify-center"
-                  >
-                    <ExternalLink size={16} />
-                    Demo
-                  </a>
+                  {/* Technologies */}
+                  <div className="mb-6">
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech, i) => (
+                        <span
+                          key={i}
+                          className="px-2.5 py-1 rounded-md bg-background/50 text-foreground text-xs font-medium border border-border/50"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Links */}
+                  <div className="flex gap-3 pt-4 border-t border-border">
+                    <a
+                      href={project.links.github}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background/50 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium flex-1 justify-center"
+                    >
+                      <Github size={16} />
+                      GitHub
+                    </a>
+                    <a
+                      href={project.links.demo}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/20 text-accent hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium flex-1 justify-center"
+                    >
+                      <ExternalLink size={16} />
+                      Demo
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         </div>
 
