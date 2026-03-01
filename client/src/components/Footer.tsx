@@ -19,7 +19,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Especialista em automação de testes e infraestrutura DevOps, 
+              Especialista em automação de testes e infraestrutura DevOps,
               comprometido com excelência em qualidade de software.
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function Footer() {
             <h4 className="font-semibold text-foreground mb-4">Redes Sociais</h4>
             <div className="flex gap-3">
               <a
-                href="https://github.com"
+                href="https://github.com/wkaroleski"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-background border border-border hover:border-accent hover:bg-accent/10 transition-all"
@@ -60,7 +60,7 @@ export default function Footer() {
                 <Github size={20} className="text-muted-foreground hover:text-accent" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/in/wagner-karoleski"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-background border border-border hover:border-accent hover:bg-accent/10 transition-all"
@@ -69,7 +69,7 @@ export default function Footer() {
                 <Linkedin size={20} className="text-muted-foreground hover:text-accent" />
               </a>
               <a
-                href="mailto:wagner@example.com"
+                href="mailto:contato@wmk.dev.br"
                 className="p-2 rounded-lg bg-background border border-border hover:border-accent hover:bg-accent/10 transition-all"
                 title="Email"
               >

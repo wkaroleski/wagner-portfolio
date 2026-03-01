@@ -3,11 +3,18 @@ import { GraduationCap, Calendar } from 'lucide-react';
 export default function Education() {
   const education = [
     {
-      degree: 'Tecnologia em DevOps',
+      degree: 'Tecnólogo em DevOps',
       institution: 'UNOPAR',
       period: 'Em andamento',
       description: 'Formação especializada em infraestrutura, containerização e práticas DevOps modernas.',
       icon: '🚀',
+    },
+    {
+      degree: 'Engenharia de Qualidade / QA Tester',
+      institution: 'EBAC (Escola Britânica de Artes Criativas e Tecnologias)',
+      period: 'Concluído',
+      description: 'Formação profissional focada em automação de testes, planejamento de QA, metodologias ágeis e garantia de qualidade em todo o ciclo de vida de desenvolvimento do software.',
+      icon: '🛡️',
     },
     {
       degree: 'Técnico em Administração',

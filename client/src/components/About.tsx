@@ -42,9 +42,10 @@ export default function About() {
 
             <p className="text-lg text-muted-foreground leading-relaxed">
               Atualmente, estou cursando Tecnologia em DevOps pela UNOPAR e possuo
-              formação técnica em Administração pelo SENAC - RS. Minha trajetória profissional
-              inclui experiências em automação de testes e análise de sistemas em empresas
-              de tecnologia de ponta.
+              formação profissional em Engenharia de Qualidade e QA Tester pela EBAC.
+              Também possuo formação técnica em Administração pelo SENAC - RS.
+              Minha trajetória profissional inclui experiências em automação de testes
+              e análise de sistemas em empresas de tecnologia de ponta.
             </p>
 
             <p className="text-lg text-muted-foreground leading-relaxed">
