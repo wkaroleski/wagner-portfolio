@@ -8,7 +8,16 @@ export default function Projects() {
       technologies: ['Rust', 'Iced (GUI)', 'Tokio', 'Rodio', 'Reqwest'],
       links: {
         github: 'https://github.com/wkaroleski/cosmic-ytm',
-        demo: '#',
+        //demo: '#',
+      },
+      status: 'Em Produção',
+    },
+    {
+      title: 'Pipeline CI/CD (Este Portfólio)',
+      description: 'Este site é uma prova de conceito viva. Todo o processo de deploy é automatizado através de uma esteira customizada no GitHub Actions, contando com Quality Gates (análise de tipagem estática do TypeScript) e Continuous Deployment (CD) integrado via API direta com o Cloudflare Pages.',
+      technologies: ['GitHub Actions', 'Cloudflare', 'TypeScript', 'CI/CD'],
+      links: {
+        github: 'https://github.com/wkaroleski/wagner-portfolio/actions',
       },
       status: 'Em Produção',
     },
