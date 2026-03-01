@@ -65,7 +65,7 @@ export default function Hero() {
           {/* Social Links */}
           <div className="flex items-center justify-center gap-4">
             <a
-              href="https://github.com"
+              href="https://github.com/wkaroleski"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 rounded-lg bg-card border border-border hover:border-accent hover:bg-accent/10 transition-all duration-300 group"
@@ -74,7 +74,7 @@ export default function Hero() {
               <Github size={20} className="text-muted-foreground group-hover:text-accent transition-colors" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/karoleski"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 rounded-lg bg-card border border-border hover:border-accent hover:bg-accent/10 transition-all duration-300 group"
