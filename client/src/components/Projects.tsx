@@ -8,6 +8,7 @@ export default function Projects() {
       technologies: ['Rust', 'Iced (GUI)', 'Tokio', 'Rodio', 'Reqwest'],
       links: {
         github: 'https://github.com/wkaroleski/cosmic-ytm',
+        demo: '#',
       },
       status: 'Em Produção',
     },
@@ -17,6 +18,7 @@ export default function Projects() {
       technologies: ['GitHub Actions', 'Cloudflare', 'TypeScript', 'CI/CD'],
       links: {
         github: 'https://github.com/wkaroleski/wagner-portfolio/actions',
+        demo: '#',
       },
       status: 'Em Produção',
     },
