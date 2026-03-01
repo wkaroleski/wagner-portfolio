@@ -10,6 +10,10 @@ jobs:
   qualidade-e-build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      deployments: write
+
     steps:
       - name: 📥 Baixar o código
         uses: actions/checkout@v4
