@@ -1,6 +1,5 @@
 name: Portfolio CI/CD
 
-# Quando essa esteira deve rodar?
 on:
   push:
     branches: [ main ]
@@ -9,7 +8,7 @@ on:
 
 jobs:
   qualidade-e-build:
-    runs-on: ubuntu-latest # O servidor que vai rodar os testes
+    runs-on: ubuntu-latest
 
     steps:
       - name: 📥 Baixar o código
@@ -27,9 +26,19 @@ jobs:
         run: pnpm install
 
       - name: 🔎 Verificação de Tipagem (TypeScript)
-        # Roda o script "check" que já existe no seu package.json
         run: pnpm run check
 
-      - name: 🏗️ Testar o Build
-        # Tenta compilar o projeto. Se quebrar aqui, o código está com erro!
+      - name: 🏗️ Testar o Build (Gera os ficheiros estáticos)
         run: pnpm run build
+
+      # ESTE É O PASSO NOVO: Deploy para o Cloudflare
+      - name: 🚀 Deploy para Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        # Só faz deploy se for um push direto na main (ignora se for apenas um PR de teste)
+        if: github.ref == 'refs/heads/main'
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'wagner-portfolio'
+          directory: 'dist/public'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
