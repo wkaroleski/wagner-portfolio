@@ -23,12 +23,28 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      toast.success('Mensagem enviada com sucesso! Responderei em breve.');
-      setFormData({ name: '', email: '', message: '' });
-      setIsSubmitting(false);
-    }, 1000);
+    try {
+      // Faz a requisição real para o seu Formspree
+      const response = await fetch('https://formspree.io/f/xwvnjzbb', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData) // Envia os dados do seu state formatados
+      });
+
+      if (response.ok) {
+        toast.success('Mensagem enviada com sucesso! Responderei em breve.');
+        setFormData({ name: '', email: '', message: '' }); // Limpa o formulário
+      } else {
+        toast.error('Ops! Ocorreu um erro ao enviar a mensagem. Tente novamente.');
+      }
+    } catch (error) {
+      toast.error('Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
+      setIsSubmitting(false); // Libera o botão novamente, dando sucesso ou erro
+    }
   };
 
   const contactLinks = [
