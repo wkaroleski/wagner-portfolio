@@ -55,6 +55,7 @@ export default function Header() {
         {/* Theme Toggle & CTA Button */}
         <div className="hidden sm:flex gap-2 items-center">
           <button
+            data-testid="theme-toggle"
             onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-card border border-border transition-colors"
             title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
@@ -76,6 +77,7 @@ export default function Header() {
         {/* Mobile Menu & Theme Toggle */}
         <div className="md:hidden flex items-center gap-2">
           <button
+            data-testid="theme-toggle"
             onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-card border border-border transition-colors"
             title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
