@@ -212,9 +212,9 @@ MIT License - veja LICENSE para detalhes
 
 ## 📞 Contato
 
-- **Email**: wagner@example.com
-- **LinkedIn**: [/in/wagnerkaroleski](https://linkedin.com/in/wagnerkaroleski)
-- **GitHub**: [@wagnerkaroleski](https://github.com/wagnerkaroleski)
+- **Email**: contato@wmk.dev.br
+- **LinkedIn**: [/in/karoleski](https://linkedin.com/in/karoleski)
+- **GitHub**: [@wagnerkaroleski](https://github.com/wkaroleski)
 
 ## 🙏 Agradecimentos
 
