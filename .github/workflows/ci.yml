@@ -35,6 +35,13 @@ jobs:
       - name: 🏗️ Testar o Build (Gera os ficheiros estáticos)
         run: pnpm run build
 
+# --- COMEÇAM OS PASSOS NOVOS DO PLAYWRIGHT ---
+      - name: 🎭 Instalar Browsers do Playwright
+        run: pnpm exec playwright install --with-deps
+
+      - name: 🧪 Rodar Testes E2E (Playwright)
+        run: pnpm exec playwright test
+
       # ESTE É O PASSO NOVO: Deploy para o Cloudflare
       - name: 🚀 Deploy para Cloudflare Pages
         uses: cloudflare/pages-action@v1
