@@ -13,9 +13,9 @@ export default function Projects() {
       status: 'Em Produção',
     },
     {
-      title: 'Pipeline CI/CD (Este Portfólio)',
-      description: 'Este site é uma prova de conceito viva. Todo o processo de deploy é automatizado através de uma esteira customizada no GitHub Actions, contando com Quality Gates (análise de tipagem estática do TypeScript) e Continuous Deployment (CD) integrado via API direta com o Cloudflare Pages.',
-      technologies: ['GitHub Actions', 'Cloudflare', 'TypeScript', 'CI/CD'],
+      title: 'Pipeline CI/CD & Automação E2E (Este Portfólio)',
+      description: 'Prova de conceito viva de Engenharia de Qualidade e DevOps. A esteira no GitHub Actions conta com Quality Gates avançados, executando testes End-to-End (E2E) com Playwright (Headless) e interceptação de rede (Mocking) antes de qualquer release. Também contamos com testes de verificação do typescript e do build. A pipeline é otimizada com estratégias de cache para dependências e navegadores, culminando em Continuous Deployment (CD) no Cloudflare Pages.',
+      technologies: ['GitHub Actions', 'Playwright', 'E2E Testing', 'Cloudflare', 'CI/CD', 'TypeScript', 'pnpm'],
       links: {
         github: 'https://github.com/wkaroleski/wagner-portfolio/actions',
         demo: '#',

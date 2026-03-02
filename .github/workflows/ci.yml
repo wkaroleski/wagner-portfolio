@@ -26,6 +26,18 @@ jobs:
       - name: 📦 Instalar pnpm
         uses: pnpm/action-setup@v4
 
+      - name: 🔍 Descobrir a pasta de cache do pnpm
+        id: pnpm-cache-dir
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: 📦 Cache das dependências (pnpm)
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache-dir.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: 🔌 Instalar dependências
         run: pnpm install
 
@@ -35,14 +47,20 @@ jobs:
       - name: 🏗️ Testar o Build (Gera os ficheiros estáticos)
         run: pnpm run build
 
-# --- COMEÇAM OS PASSOS NOVOS DO PLAYWRIGHT ---
+      - name: 📦 Cache dos navegadores do Playwright
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
       - name: 🎭 Instalar Browsers do Playwright
         run: pnpm exec playwright install --with-deps
 
       - name: 🧪 Rodar Testes E2E (Playwright)
         run: pnpm exec playwright test
 
-      # ESTE É O PASSO NOVO: Deploy para o Cloudflare
       - name: 🚀 Deploy para Cloudflare Pages
         uses: cloudflare/pages-action@v1
         # Só faz deploy se for um push direto na main (ignora se for apenas um PR de teste)
