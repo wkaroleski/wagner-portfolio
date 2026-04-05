@@ -14,7 +14,7 @@ export default function Projects() {
     },
     {
       title: 'Pipeline CI/CD & Automação E2E (Este Portfólio)',
-      description: 'Prova de conceito viva de Engenharia de Qualidade e DevOps. A esteira no GitHub Actions conta com Quality Gates avançados, executando testes End-to-End (E2E) com Playwright (Headless) e interceptação de rede (Mocking) antes de qualquer release. Também contamos com testes de verificação do typescript e do build. A pipeline é otimizada com estratégias de cache para dependências e navegadores, culminando em Continuous Deployment (CD) no Cloudflare Pages.',
+      description: 'Prova de conceito viva de Engenharia de Qualidade, DevOps e IA. A esteira no GitHub Actions conta com Quality Gates avançados, executando testes End-to-End (E2E) com Playwright (Headless) e interceptação de rede (Mocking) antes de qualquer release, além de testes de verificação do TypeScript e do build. A pipeline é otimizada com estratégias de cache para dependências e navegadores, culminando em Continuous Deployment (CD) no Cloudflare Pages. Como diferencial, a aplicação integra um Agente de IA Serverless (Google Gemma 4) a rodar diretamente na borda da rede (Edge), capaz de analisar código HTML para gerar scripts de automação E2E e responder a dúvidas sobre o currículo de forma interativa e com latência zero.',
       technologies: ['GitHub Actions', 'Playwright', 'E2E Testing', 'Cloudflare', 'CI/CD', 'TypeScript', 'pnpm'],
       links: {
         github: 'https://github.com/wkaroleski/wagner-portfolio/actions',
