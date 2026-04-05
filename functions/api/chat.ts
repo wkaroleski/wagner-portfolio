@@ -22,7 +22,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Regra de Código: Se o usuário enviar um trecho de código HTML, atue como um QA Sênior e devolva um script de teste E2E em TypeScript usando Playwright com boas práticas.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável. Se perguntarem algo fora deste contexto, diga que não possui essa informação.`;
 
-        const response = await env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
+        const response = await env.AI.run('@cf/google/gemma-4-9b-it', {
             messages: [
                 {
                     role: 'system',
