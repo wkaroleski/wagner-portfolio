@@ -128,17 +128,16 @@ export default function FloatingChat() {
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[85%] p-3 rounded-xl text-sm ${msg.role === 'user'
-                                        ? 'bg-accent text-accent-foreground rounded-tr-none whitespace-pre-wrap'
-                                        : 'bg-background border border-border text-foreground rounded-tl-none'
+                                    ? 'bg-accent text-accent-foreground rounded-tr-none whitespace-pre-wrap'
+                                    : 'bg-background border border-border text-foreground rounded-tl-none'
                                     }`}>
                                     {/* Se for a IA respondendo, passamos pelo ReactMarkdown */}
                                     {msg.role === 'assistant' ? (
-                                        <ReactMarkdown
-                                            components={{ code: CodeBlock }}
-                                            className="space-y-2 leading-relaxed"
-                                        >
-                                            {msg.content}
-                                        </ReactMarkdown>
+                                        <div className="space-y-2 leading-relaxed">
+                                            <ReactMarkdown components={{ code: CodeBlock }}>
+                                                {msg.content}
+                                            </ReactMarkdown>
+                                        </div>
                                     ) : (
                                         msg.content
                                     )}
