@@ -146,6 +146,11 @@ export default function Contact() {
                 <MessageSquare size={20} />
                 {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
               </button>
+
+              {/* Aviso LGPD adicionado aqui */}
+              <p className="text-xs text-muted-foreground text-center mt-4">
+                Ao enviar esta mensagem, você concorda que seus dados sejam utilizados exclusivamente para fins de contato profissional, em conformidade com a LGPD.
+              </p>
             </form>
           </div>
 
