@@ -55,8 +55,6 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Regra de Código: Se o usuário enviar um trecho de código HTML, atue como um QA Sênior e devolva um script de teste E2E em TypeScript usando Playwright com boas práticas.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável. Se perguntarem algo fora deste contexto, diga que não possui essa informação.`;
 
-        // 7. Chamada OpenRouter
-        // --- 5. ROTEAMENTO RESILIENTE (OPENROUTER FALLBACK) ---
         const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -66,10 +64,12 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
+                // Array de modelos em ordem de prioridade para fallback automático [[29]]
                 models: [
-                    "meta-llama/llama-3.1-8b-instruct:free",
-                    "mistralai/mistral-7b-instruct:free",
-                    "google/gemma-2-9b-it:free"
+                    "qwen/qwen3-6-plus:free",
+                    "meta-llama/llama-3.3-70b-instruct:free",
+                    "google/gemma-3-27b:free",
+                    "nvidia/nemotron-3-super:free"
                 ],
                 messages: [
                     { role: "system", content: contextoWagner },
