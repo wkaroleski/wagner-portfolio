@@ -8,11 +8,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     try {
         const { request, env } = context;
 
-        // 1. Nosso Segurança de Porta: Identificar IP e verificar limite (Rate Limit via KV)
+        // 1. Identificar IP e acessar o banco KV
         const ip = request.headers.get('cf-connecting-ip') || 'ip-desconhecido';
         const requestCountStr = await env.RATE_LIMITER.get(ip);
         let requestCount = requestCountStr ? parseInt(requestCountStr) : 0;
 
+        // 2. Coletar a pergunta do usuário PRIMEIRO
+        const body = await request.json() as { prompt: string };
+        const prompt = body.prompt;
+
+        // 3. O CHEAT CODE DO ADMIN (Antes do bloqueio!)
+        if (env.ADMIN_SECRET_CODE && prompt.trim() === env.ADMIN_SECRET_CODE) {
+            await env.RATE_LIMITER.delete(ip); // Limpa seu IP
+            return new Response(
+                JSON.stringify({
+                    choices: [{ message: { content: "✅ Autenticação aceita, Chefe! Seu IP foi limpo do firewall e os testes estão liberados." } }]
+                }),
+                { status: 200, headers: { 'content-type': 'application/json' } }
+            );
+        }
+
+        // 4. Rate Limit normal (Se não for o Chefe, barra se passar de 5)
         if (requestCount >= 5) {
             return new Response(
                 JSON.stringify({
@@ -22,20 +38,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
+        // 5. Incrementa o contador de uso
         await env.RATE_LIMITER.put(ip, (requestCount + 1).toString(), { expirationTtl: 86400 });
 
-        // 2. Coletar a pergunta do usuário
-        const body = await request.json() as { prompt: string };
-        const prompt = body.prompt;
-        if (env.ADMIN_SECRET_CODE && prompt.trim() === env.ADMIN_SECRET_CODE) {
-            await env.RATE_LIMITER.delete(ip);
-            return new Response(
-                JSON.stringify({
-                    choices: [{ message: { content: "✅ Autenticação aceita, Chefe! Seu IP foi limpo do firewall e os testes estão liberados." } }]
-                }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            );
-        }
+        // 6. O Cérebro
         const contextoWagner = `Você é o assistente virtual técnico do portfólio de Wagner Karoleski.
 Use estritamente as informações abaixo para responder. NÃO invente dados.
 
@@ -49,17 +55,17 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Regra de Código: Se o usuário enviar um trecho de código HTML, atue como um QA Sênior e devolva um script de teste E2E em TypeScript usando Playwright com boas práticas.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável. Se perguntarem algo fora deste contexto, diga que não possui essa informação.`;
 
-        // 3. O Cheat Code: Chamada externa para o OpenRouter (Modelo Grátis com 1M Tokens)
+        // 7. Chamada OpenRouter
         const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${env.OPENROUTER_API_KEY}`,
                 "Content-Type": "application/json",
-                "HTTP-Referer": "https://wmk.dev.br", // Requisito do OpenRouter
+                "HTTP-Referer": "https://wmk.dev.br",
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
-                model: "qwen/qwen-3.6-plus:free", // O endpoint gratuito do Qwen 3.6 Plus
+                model: "qwen/qwen-3.6-plus:free",
                 messages: [
                     { role: "system", content: contextoWagner },
                     { role: "user", content: prompt }
@@ -69,7 +75,6 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 
         const data = await openRouterResponse.json();
 
-        // Devolvemos o JSON no exato formato que o seu React já entende
         return new Response(JSON.stringify(data), {
             headers: { 'content-type': 'application/json' },
         });
