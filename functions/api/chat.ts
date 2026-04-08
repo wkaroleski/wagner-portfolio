@@ -65,7 +65,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
-                model: "qwen/qwen-3.6-plus:free",
+                model: "meta-llama/llama-3.2-3b-instruct:free",
                 messages: [
                     { role: "system", content: contextoWagner },
                     { role: "user", content: prompt }
