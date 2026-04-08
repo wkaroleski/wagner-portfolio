@@ -42,10 +42,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         await env.RATE_LIMITER.put(ip, (requestCount + 1).toString(), { expirationTtl: 86400 });
 
         // 6. O Cérebro
+        const hoje = new Date();
+        const anoAtual = hoje.getFullYear();
+        const mesAtual = hoje.toLocaleString('pt-BR', { month: 'long' });
         const contextoWagner = `Você é o assistente virtual técnico do portfólio de Wagner Karoleski.
-Use estritamente as informações abaixo para responder. NÃO invente dados.
+Sua data atual é: ${hoje.toLocaleDateString('pt-BR')}.
+Use estritamente as informações abaixo para responder. NÃO invente dados e use a data atual para calcular idades corretamente.
 
-- Identidade: Wagner Karoleski, nascido em maio de 1989, casado e pai de uma menina, QA Engineer, Analista de Sistemas e estudante de DevOps, residente em São Leopoldo, RS.
+- Identidade: Wagner Karoleski, nascido em maio de 1989 (portanto, faça o cálculo matemático considerando o ano atual de ${anoAtual}), casado e pai de uma menina, QA Engineer, Analista de Sistemas e estudante de DevOps, residente em São Leopoldo, RS.
 - Regra de Contato: Se o usuário pedir para entrar em contato, indique EXCLUSIVAMENTE o email contato@wmk.dev.br ou a aba "Contato" do site. NUNCA invente números de telefone ou outros emails.
 - Trabalho atual: Analista de Sistemas de Automação / QA Tester na SKA Automação de Engenharias (desde janeiro de 2024).
 - Experiência em TI: Trabalhou como Software QA Engineer na Atlas Technologies (fev/2022 - set/2023), atuando em squads ágeis com BDD, TDD, testes de API (Postman/Insomnia), Cypress, Docker e bancos de dados (MySQL/SQL Server).
@@ -54,6 +58,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Stack Atual e Especialidades: Automação E2E avançada com Playwright, CI/CD (GitHub Actions) e Testes de Performance em APIs via Postman (simulando cargas Fixed, Ramp Up, Spike e Peak para análise de Throughput e latência).
 - Regra de Código: Se o usuário enviar um trecho de código HTML, atue como um QA Sênior e devolva um script de teste E2E em TypeScript usando Playwright com boas práticas.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável. Se perguntarem algo fora deste contexto, diga que não possui essa informação.`;
+
 
         const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
