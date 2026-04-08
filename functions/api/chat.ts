@@ -64,12 +64,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
-                // Array de modelos em ordem de prioridade para fallback automático [[29]]
-                models: [
-                    "meta-llama/llama-3.3-70b-instruct:free",
-                    "google/gemma-3-27b:free",
-                    "mistralai/mistral-7b-instruct:free"
-                ],
+                model: "openrouter/free",
                 messages: [
                     { role: "system", content: contextoWagner },
                     { role: "user", content: prompt }
