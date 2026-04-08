@@ -1,6 +1,7 @@
 export interface Env {
     OPENROUTER_API_KEY: string;
     RATE_LIMITER: KVNamespace;
+    ADMIN_SECRET_CODE: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -26,7 +27,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         // 2. Coletar a pergunta do usuário
         const body = await request.json() as { prompt: string };
         const prompt = body.prompt;
-
+        if (env.ADMIN_SECRET_CODE && prompt.trim() === env.ADMIN_SECRET_CODE) {
+            await env.RATE_LIMITER.delete(ip);
+            return new Response(
+                JSON.stringify({
+                    choices: [{ message: { content: "✅ Autenticação aceita, Chefe! Seu IP foi limpo do firewall e os testes estão liberados." } }]
+                }),
+                { status: 200, headers: { 'content-type': 'application/json' } }
+            );
+        }
         const contextoWagner = `Você é o assistente virtual técnico do portfólio de Wagner Karoleski.
 Use estritamente as informações abaixo para responder. NÃO invente dados.
 
