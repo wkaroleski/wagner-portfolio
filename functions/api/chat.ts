@@ -56,6 +56,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável. Se perguntarem algo fora deste contexto, diga que não possui essa informação.`;
 
         // 7. Chamada OpenRouter
+        // --- 5. ROTEAMENTO RESILIENTE (OPENROUTER FALLBACK) ---
         const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -65,7 +66,11 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-3.2-3b-instruct:free",
+                models: [
+                    "meta-llama/llama-3.1-8b-instruct:free",
+                    "mistralai/mistral-7b-instruct:free",
+                    "google/gemma-2-9b-it:free"
+                ],
                 messages: [
                     { role: "system", content: contextoWagner },
                     { role: "user", content: prompt }
