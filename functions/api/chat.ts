@@ -66,10 +66,9 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
             body: JSON.stringify({
                 // Array de modelos em ordem de prioridade para fallback automático [[29]]
                 models: [
-                    "qwen/qwen3-6-plus:free",
                     "meta-llama/llama-3.3-70b-instruct:free",
                     "google/gemma-3-27b:free",
-                    "nvidia/nemotron-3-super:free"
+                    "mistralai/mistral-7b-instruct:free"
                 ],
                 messages: [
                     { role: "system", content: contextoWagner },
