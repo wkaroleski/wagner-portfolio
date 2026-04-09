@@ -9,16 +9,15 @@ const AI_MODELS = [
     {
         group: "🟢 Modelos Gratuitos",
         options: [
-            { id: 'openrouter/free', name: 'Auto Router Inteligente', tier: 'free' },
-            { id: 'meta-llama/llama-3.1-8b-instruct:free', name: 'Meta Llama 3.1 (8B)', tier: 'free' },
-            { id: 'google/gemma-2-9b-it:free', name: 'Google Gemma 2 (9B)', tier: 'free' }
+            { id: 'openrouter/free', name: 'Auto Router Inteligente', tier: 'free' }
         ]
     },
     {
         group: "💎 Modelos Premium",
         options: [
+            { id: 'x-ai/grok-4.1-fast', name: 'X-AI Grok 4.1 Fast', tier: 'premium' },
             { id: 'openai/gpt-4o-mini', name: 'OpenAI GPT-4o Mini', tier: 'premium' },
-            { id: 'anthropic/claude-3.5-haiku', name: 'Anthropic Claude 3.5 Haiku', tier: 'premium' }
+            { id: 'qwen/qwen3.6-plus', name: 'Alibaba Qwen 3.6 Plus', tier: 'premium' }
         ]
     }
 ];
