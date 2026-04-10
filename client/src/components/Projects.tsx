@@ -13,15 +13,25 @@ export default function Projects() {
       status: 'Em Produção',
     },
     {
-      title: 'Pipeline CI/CD & Automação E2E (Este Portfólio)',
-      description: 'Prova de conceito viva de Engenharia de Qualidade, DevOps e IA. A esteira no GitHub Actions conta com Quality Gates avançados, executando testes End-to-End (E2E) com Playwright (Headless) e interceptação de rede (Mocking) antes de qualquer release, além de testes estáticos de TypeScript e build. A pipeline é otimizada com estratégias de cache para dependências e navegadores, culminando em Continuous Deployment (CD) no Cloudflare Pages. Como grande diferencial arquitetural, a aplicação integra um Agente de IA Serverless na borda da rede (Edge Computing) com roteamento multi-modelo dinâmico. O sistema permite alternar entre LLMs Premium (como Grok 4.1 Fast e Qwen Plus) e Gratuitos (Via openrouter free tier) para analisar código HTML, gerar scripts de automação E2E e tirar dúvidas. Para garantir a segurança e a sustentabilidade financeira do projeto (FinOps), foi desenvolvido um Rate Limiter duplo via Cloudflare KV, que gerencia cotas independentes por nível de acesso, previne abusos e aplica Graceful Degradation (fallback automático) em caso de indisponibilidade de provedores ou esgotamento de saldo, mantendo o sistema operante e com latência zero.',
+      title: 'Portfólio com Roteamento Dinâmico de IA',
+      description: 'Prova de conceito viva de Engenharia de Qualidade, DevOps e IA, construída com base em TypeScript e gerida via pnpm. A esteira de CI/CD no GitHub Actions conta com Quality Gates avançados, executando E2E Testing com Playwright (Headless) e interceção de rede (Mocking) antes de qualquer release. Como grande diferencial arquitetural, a aplicação integra um Agente de IA Serverless na borda da rede (Edge Computing) com roteamento multi-modelo dinâmico. O sistema permite alternar entre LLMs Premium (Grok 4.1 Fast, Qwen Plus) e Gratuitos para analisar código HTML e gerar scripts de automação. Para garantir a segurança e a sustentabilidade financeira (FinOps), foi desenvolvido um Rate Limiter duplo via Cloudflare KV, que gere quotas independentes por nível de acesso, previne abusos e aplica Graceful Degradation.',
       technologies: ['GitHub Actions', 'Playwright', 'E2E Testing', 'Cloudflare', 'CI/CD', 'TypeScript', 'pnpm'],
       links: {
-        github: 'https://github.com/wkaroleski/wagner-portfolio/actions',
+        github: 'https://github.com/wkaroleski/wagner-portfolio', // Atualizei o link para o repositório principal
         demo: '#',
       },
       status: 'Em Produção',
     },
+    {
+      title: 'Observabilidade & FinOps (Zero-Trust)',
+      description: 'Arquitetura de monitorização avançada construída para acompanhar a performance e os custos de API do portfólio. O sistema recolhe métricas de uso e consumo de tokens da IA de forma assíncrona (via Cloudflare Workers) e envia os dados, através de um Cloudflare Tunnel seguro (Zero-Trust), para uma instância VPS da Oracle Cloud. O backend de armazenamento assenta numa base de dados InfluxDB, isolada de acessos públicos através de uma rede mesh VPN privada (Tailscale), alimentando um dashboard dinâmico no Grafana. Esta solução permite monitorizar em tempo real a resiliência do sistema e otimizar os custos computacionais da infraestrutura.',
+      technologies: ['Grafana', 'InfluxDB', 'Tailscale', 'Cloudflare Tunnels', 'Docker', 'Oracle Cloud VPS', 'FinOps'],
+      links: {
+        github: '#', // Como a infraestrutura é privada, não há um repositório público óbvio, a menos que tenhas os manifests Docker.
+        demo: '#', // Apenas para ti.
+      },
+      status: 'Em Produção',
+    }
   ];
 
   return (
@@ -39,9 +49,9 @@ export default function Projects() {
         </div>
 
         {/* Projects with Image */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl items-start">
-          {/* Image Column */}
-          <div className="md:col-span-1 rounded-xl overflow-hidden border border-border/50 shadow-2xl h-fit sticky top-24">
+        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto items-start">
+          {/* Image Column - Ajustado para ser mais flexível em diferentes ecrãs */}
+          <div className="lg:w-1/3 rounded-xl overflow-hidden border border-border/50 shadow-2xl h-fit lg:sticky lg:top-24 hidden lg:block">
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663028681954/jbgjfHWhxhUsAcZnqy37sH/code-quality-metrics-NPRf2NY2t4xM5uJAELsjqn.webp"
               alt="Métricas de Qualidade"
@@ -49,12 +59,12 @@ export default function Projects() {
             />
           </div>
 
-          {/* Projects Grid */}
-          <div className="md:col-span-2 grid md:grid-cols-2 gap-8">
+          {/* Projects Grid - Adaptado para três cartões */}
+          <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
             {projects.map((project, index) => (
               <div
                 key={index}
-                className="group relative rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden h-full flex flex-col"
+                className={`group relative rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden h-full flex flex-col ${index === 2 ? 'md:col-span-2' : ''}`} // O terceiro projeto ocupa duas colunas em ecrãs médios para destaque
               >
                 {/* Gradient Background on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
@@ -113,7 +123,7 @@ export default function Projects() {
         <div className="mt-16 text-center">
           <p className="text-muted-foreground mb-4">Mais projetos em breve...</p>
           <a
-            href="https://github.com"
+            href="https://github.com/wkaroleski"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground hover:border-accent hover:bg-accent/10 transition-all duration-300"

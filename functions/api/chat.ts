@@ -2,72 +2,74 @@ export interface Env {
     OPENROUTER_API_KEY: string;
     RATE_LIMITER: KVNamespace;
     ADMIN_SECRET_CODE: string;
+    INFLUX_PASSWORD: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
+    const startTime = Date.now();
+    const { request, env } = context;
+
+    // Função auxiliar para enviar logs para o InfluxDB em Background
+    const sendTelemetry = async (measurement: string, tags: Record<string, string>, fields: Record<string, any>) => {
+        if (!env.INFLUX_PASSWORD) return;
+
+        // Formata os dados para o padrão "Line Protocol" do InfluxDB
+        const tagStr = Object.entries(tags).map(([k, v]) => `${k}=${v}`).join(',');
+        const fieldStr = Object.entries(fields).map(([k, v]) => `${k}=${typeof v === 'string' ? `"${v}"` : v}`).join(',');
+        const line = `${measurement},${tagStr} ${fieldStr}`;
+
+        try {
+            await fetch('https://logs.wmk.dev.br/write?db=portifolio', {
+                method: 'POST',
+                headers: { 'Authorization': 'Basic ' + btoa(`admin:${env.INFLUX_PASSWORD}`) },
+                body: line
+            });
+        } catch (error) {
+            console.error("Falha ao enviar telemetria", error);
+        }
+    };
+
     try {
-        const { request, env } = context;
-
-        // 1. Identificar IP
         const ip = request.headers.get('cf-connecting-ip') || 'ip-desconhecido';
-
-        // 2. Coletar payload (Agora o Front-End vai mandar o modelo escolhido e a categoria)
         const body = await request.json() as { prompt: string; modelTier?: 'free' | 'premium'; selectedModel?: string };
         const prompt = body.prompt || "";
-
-        // Valores padrão caso o Front-End ainda não esteja enviando
         const modelTier = body.modelTier || 'free';
         const selectedModel = body.selectedModel || 'openrouter/free';
 
-        // 3. CHEAT CODE
+        // CHEAT CODE
         if (env.ADMIN_SECRET_CODE && prompt.trim() === env.ADMIN_SECRET_CODE) {
             if (env.RATE_LIMITER) {
                 await env.RATE_LIMITER.delete(`${ip}_free`);
                 await env.RATE_LIMITER.delete(`${ip}_premium`);
             }
-            return new Response(
-                JSON.stringify({
-                    choices: [{ message: { content: "✅ Autenticação aceita, Chefe! Suas cotas Free e Premium foram resetadas." } }]
-                }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            );
+            context.waitUntil(sendTelemetry('chat_events', { type: 'admin_cheat' }, { value: 1 }));
+            return new Response(JSON.stringify({ choices: [{ message: { content: "✅ Cotas resetadas." } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        // 4. VALIDAÇÃO DE TAMANHO
+        // VALIDAÇÃO DE TAMANHO
         const isHTML = prompt.includes('<') && prompt.includes('>');
         const maxLength = isHTML ? 1500 : 240;
 
         if (prompt.length > maxLength) {
-            const tipoMsg = isHTML ? "trechos de código HTML (máximo de 1.500 caracteres)" : "perguntas normais (máximo de 240 caracteres, tipo um tweet)";
-            return new Response(
-                JSON.stringify({
-                    choices: [{ message: { content: `Ops! Sua mensagem é muito longa para ${tipoMsg}. Seu texto atual tem ${prompt.length} caracteres. Reduza um pouco para protegermos nossos tokens!` } }]
-                }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            );
+            context.waitUntil(sendTelemetry('chat_events', { type: 'payload_too_large', tier: modelTier }, { value: 1 }));
+            return new Response(JSON.stringify({ choices: [{ message: { content: `Ops! Sua mensagem passou do limite.` } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        // 5. RATE LIMITER DUPLO
+        // RATE LIMITER DUPLO
         const kvKey = `${ip}_${modelTier}`;
         let requestCount = 0;
-
         if (env.RATE_LIMITER) {
             const requestCountStr = await env.RATE_LIMITER.get(kvKey);
             requestCount = requestCountStr ? parseInt(requestCountStr) : 0;
         }
 
         const limiteAtual = modelTier === 'premium' ? 5 : 10;
-
         if (requestCount >= limiteAtual) {
-            return new Response(
-                JSON.stringify({
-                    choices: [{ message: { content: `Ops! Você atingiu o limite de ${limiteAtual} testes diários no plano ${modelTier.toUpperCase()}. Volte amanhã ou experimente a outra aba de modelos!` } }]
-                }),
-                { status: 200, headers: { 'content-type': 'application/json' } } // Status 200 pro React não quebrar
-            );
+            context.waitUntil(sendTelemetry('chat_events', { type: 'rate_limit_hit', tier: modelTier }, { value: 1 }));
+            return new Response(JSON.stringify({ choices: [{ message: { content: `Ops! Você atingiu o limite de testes diários.` } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        // 6. O CÉREBRO (Com cálculo de idade exato)
+        // PREPARAÇÃO DO CONTEXTO
         const hoje = new Date();
         const anoAtual = hoje.getFullYear();
         const mesAtual = hoje.getMonth();
@@ -77,7 +79,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const contextoWagner = `Você é o assistente virtual técnico do portfólio de Wagner Karoleski.
 Data de hoje: ${hoje.toLocaleDateString('pt-BR')}.
 Use estritamente as informações abaixo para responder. NÃO invente dados.
-
 - Identidade: Wagner Karoleski, nascido em maio de 1989 (atualmente com exatos ${idadeWagner} anos), casado e pai de uma menina, QA Engineer, Analista de Sistemas e estudante de DevOps, residente em São Leopoldo, RS.
 - Regra de Contato: Se o usuário pedir para entrar em contato, indique EXCLUSIVAMENTE o email contato@wmk.dev.br ou a aba "Contato" do site. NUNCA invente números de telefone ou outros emails.
 - Trabalho atual: Analista de Sistemas de Automação / QA Tester na SKA Automação de Engenharias (desde janeiro de 2024).
@@ -88,7 +89,7 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
 - Regra de Código: Se o usuário enviar um trecho de código HTML, atue como um QA Sênior e devolva um script de teste E2E em TypeScript usando Playwright com boas práticas.
 - Regra de Postura: Responda sempre em Português do Brasil, de forma profissional, direta e amigável.`;
 
-        // 7. CHAMADA PARA A IA
+        // CHAMADA PARA A IA
         const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -98,53 +99,37 @@ Use estritamente as informações abaixo para responder. NÃO invente dados.
                 "X-Title": "Wag-Bot QA"
             },
             body: JSON.stringify({
-                model: selectedModel, // Usa o modelo que veio do Front-End
-                messages: [
-                    { role: "system", content: contextoWagner },
-                    { role: "user", content: prompt }
-                ]
+                model: selectedModel,
+                messages: [{ role: "system", content: contextoWagner }, { role: "user", content: prompt }]
             })
         });
 
-        // 8. O TRATAMENTO DE FALTA DE SALDO (402) - FinOps
         if (openRouterResponse.status === 402) {
-            return new Response(
-                JSON.stringify({
-                    choices: [{ message: { content: "Ops! Estamos sem tokens pagos no momento. Por favor, selecione o plano gratuito no menu para continuar testando!" } }]
-                }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            );
+            context.waitUntil(sendTelemetry('chat_events', { type: 'payment_required_402', model: selectedModel }, { value: 1 }));
+            return new Response(JSON.stringify({ choices: [{ message: { content: "Ops! Estamos sem tokens pagos. Selecione o plano gratuito!" } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        // 9. COBRANÇA DA COTA (Só chega aqui se o OpenRouter não deu Erro 402)
         if (env.RATE_LIMITER) {
             await env.RATE_LIMITER.put(kvKey, (requestCount + 1).toString(), { expirationTtl: 86400 });
         }
 
-        // 10. DEVOLVE A RESPOSTA PRO FRONT
         const responseText = await openRouterResponse.text();
         let data;
-        try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            return new Response(JSON.stringify({
-                choices: [{ message: { content: `🤖 Erro crítico: A API não devolveu um JSON válido.` } }]
-            }), { status: 200, headers: { 'content-type': 'application/json' } });
-        }
+        try { data = JSON.parse(responseText); }
+        catch (e) { return new Response(JSON.stringify({ choices: [{ message: { content: `🤖 Erro crítico JSON.` } }] }), { status: 200, headers: { 'content-type': 'application/json' } }); }
 
-        if (data.error) {
-            return new Response(JSON.stringify({
-                choices: [{ message: { content: `🤖 Erro da API: ${data.error.message || 'Falha na comunicação.'}` } }]
-            }), { status: 200, headers: { 'content-type': 'application/json' } });
-        }
+        // Envia as métricas de performance e custo para o Grafana
+        const durationMs = Date.now() - startTime;
+        const totalTokens = data.usage?.total_tokens || 0;
 
-        return new Response(JSON.stringify(data), {
-            headers: { 'content-type': 'application/json' },
-        });
+        context.waitUntil(sendTelemetry('chat_usage',
+            { model: selectedModel, tier: modelTier },
+            { duration_ms: durationMs, tokens: totalTokens }
+        ));
+
+        return new Response(JSON.stringify(data), { headers: { 'content-type': 'application/json' } });
 
     } catch (error: any) {
-        return new Response(JSON.stringify({
-            choices: [{ message: { content: `🤖 Falha Interna no Worker: ${error.message}` } }]
-        }), { status: 200, headers: { 'content-type': 'application/json' } });
+        return new Response(JSON.stringify({ choices: [{ message: { content: `🤖 Falha Interna no Worker.` } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
     }
 };
