@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Dependencies
 
-        run: npm install @actions/github @actions/core
+        run: npm install @actions/github @actions/core --no-save --legacy-peer-deps
 
       - name: Run QA Agent Script
         env:
