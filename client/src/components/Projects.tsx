@@ -13,11 +13,11 @@ export default function Projects() {
       status: 'Em Produção',
     },
     {
-      title: 'Portfólio com Roteamento Dinâmico de IA',
-      description: 'Prova de conceito viva de Engenharia de Qualidade, DevOps e IA, construída com base em TypeScript e gerida via pnpm. A esteira de CI/CD no GitHub Actions conta com Quality Gates avançados, executando E2E Testing com Playwright (Headless) e interceção de rede (Mocking) antes de qualquer release. Como grande diferencial arquitetural, a aplicação integra um Agente de IA Serverless na borda da rede (Edge Computing) com roteamento multi-modelo dinâmico. O sistema permite alternar entre LLMs Premium (Grok 4.1 Fast, Qwen Plus) e Gratuitos para analisar código HTML e gerar scripts de automação. Para garantir a segurança e a sustentabilidade financeira (FinOps), foi desenvolvido um Rate Limiter duplo via Cloudflare KV, que gere quotas independentes por nível de acesso, previne abusos e aplica Graceful Degradation.',
-      technologies: ['GitHub Actions', 'Playwright', 'E2E Testing', 'Cloudflare', 'CI/CD', 'TypeScript', 'pnpm'],
+      title: 'Portfólio com Agente QA e Edge AI',
+      description: 'Prova de conceito viva de Engenharia de Qualidade, DevOps e IA, construída com TypeScript. A esteira de CI/CD no GitHub Actions integra um "Agente QA Autônomo" (DeepSeek V4), que analisa os Pull Requests para gerar automaticamente cenários BDD e testes E2E com Playwright. Na aplicação, a integração serverless na borda (Edge Computing) conta com roteamento multi-modelo dinâmico, permitindo alternar entre LLMs Premium (Grok Fast, Qwen Plus) e Gratuitos dependendo da complexidade do payload. O sistema inclui Rate Limiting via Cloudflare KV para prevenção de abusos na API.',
+      technologies: ['GitHub Actions', 'DeepSeek V4 (AI QA)', 'Playwright', 'Cloudflare Workers', 'TypeScript'],
       links: {
-        github: 'https://github.com/wkaroleski/wagner-portfolio', // Atualizei o link para o repositório principal
+        github: 'https://github.com/wkaroleski/wagner-portfolio',
         demo: '#',
       },
       status: 'Em Produção',
